@@ -49,11 +49,16 @@ public class EasyCompressor implements IEasyCompressor {
      */
     public static void init(@NonNull Context context, @Nullable CompressOptions options) {
 
-        mContext = context;
+        //保证只需要初始化一次
+        if(mContext==null){
+            mContext = context;
+        }
+
 
         if(mOptions==null){
             mOptions=options;
         }
+
     }
 
     /**
