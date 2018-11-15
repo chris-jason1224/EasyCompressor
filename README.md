@@ -13,7 +13,7 @@ Android图片压缩库
          
       2、直接使用
       
-         //a.默认的压缩配置（压缩到3M，压缩后质量不低于65%）
+         //a.默认的压缩配置（压缩到1.5M以下，压缩后质量不低于65%）
          EasyCompressor.getInstance().compress("file://xxxxx.png", new CompressCallback() {
             @Override
             public void onSuccess(File compressedFile) {
