@@ -37,45 +37,27 @@ import io.reactivex.schedulers.Schedulers;
 public class EasyCompressor implements IEasyCompressor {
     public static String TAG = "EasyCompressor";
     private static Context mContext;
-    private static CompressOptions mOptions;
-
+    //压缩参数
+    private static volatile CompressOptions mOptions;
     private EasyCompressor() {
     }
 
     /**
      * EasyCompressor的初始化方法，只调用一次即可
      * @param context
-     * @param options
      */
-    public static void init(@NonNull Context context, @Nullable CompressOptions options) {
-
+    public static void init(@NonNull Context context) {
         //保证只需要初始化一次
         if(mContext==null){
             mContext = context;
         }
-
-
-        if(mOptions==null){
-            mOptions=options;
-        }
-
     }
 
     /**
      * EasyCompressor调用入口
-     * @param options
      * @return
      */
-    public static EasyCompressor with(@Nullable CompressOptions options){
-        mOptions=options;//不同使用的地方可能有不同的CompressOptions
-        return Holder.instance;
-    }
-
-    private static class Holder {
-        private static final EasyCompressor instance = new EasyCompressor();
-    }
-
-    public static EasyCompressor getInstance() {
+    public static EasyCompressor getInstance(CompressOptions options) {
         if (mContext == null) {
             try {
                 throw new Exception("---请先初始化EasyCompressor---");
@@ -83,10 +65,16 @@ public class EasyCompressor implements IEasyCompressor {
                 e.printStackTrace();
             }
         }
+        //注入压缩参数
+        mOptions = options;
         return Holder.instance;
     }
 
-    public Context getContext() {
+    private static class Holder {
+        private static final EasyCompressor instance = new EasyCompressor();
+    }
+
+    public static Context getContext() {
         if(mContext==null){
             try {
                 throw new Exception("请先初始化EasyCompressor！！！");
@@ -97,13 +85,12 @@ public class EasyCompressor implements IEasyCompressor {
         return mContext;
     }
 
-    public CompressOptions getOptions() {
+    public static CompressOptions getOptions() {
         if (mOptions == null) {
-            return new CompressOptions();
+            mOptions = new CompressOptions();
         }
         return mOptions;
     }
-
 
     @Override
     public void compress(@NonNull final String filePath,@NonNull final CompressCallback callback) {
@@ -166,6 +153,5 @@ public class EasyCompressor implements IEasyCompressor {
             }
         });
     }
-
 
 }

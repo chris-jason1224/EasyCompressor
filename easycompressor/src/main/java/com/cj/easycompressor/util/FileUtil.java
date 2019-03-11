@@ -56,41 +56,59 @@ public class FileUtil {
         }
 
         //保存的文件路径
-        File outPath = EasyCompressor.getInstance().getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (!outPath.exists()) {
-            outPath.mkdir();
+        String outPath = EasyCompressor.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath()+"/compress/";
+        File dir = new File(outPath);
+        //创建文件夹
+        if(dir!=null){
+            if(!dir.exists()){
+                dir.mkdirs();
+            }
         }
+
         //保存的文件
-        File tempFile = new File(outPath.getAbsolutePath() + "/compress/" + System.currentTimeMillis() + suffix);
+        File tempFile = new File(outPath + System.currentTimeMillis() + suffix);
 
         if (tempFile != null) {
 
-            if (tempFile.exists()) {
+            if(tempFile.exists()){
                 tempFile.delete();
             }
-            BufferedOutputStream bufferedOutputStream= null;
             FileOutputStream fileOutputStream=null;
+            BufferedOutputStream bufferedOutputStream= null;
             try {
-                tempFile.createNewFile();
-                fileOutputStream=new FileOutputStream(tempFile);
-                if(fileOutputStream!=null){
-                    bufferedOutputStream=new BufferedOutputStream(fileOutputStream);
-                    if(bufferedOutputStream!=null) {
-                        bufferedOutputStream.write(data);
-                        bufferedOutputStream.flush();
-                    }
+                boolean create = tempFile.createNewFile();
+                if(create){
+                    fileOutputStream =new FileOutputStream(tempFile);
 
+                    if(fileOutputStream!=null){
+                        bufferedOutputStream=new BufferedOutputStream(fileOutputStream);
+                        if(bufferedOutputStream!=null) {
+                            bufferedOutputStream.write(data);
+                            bufferedOutputStream.flush();
+                        }
+                    }
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }finally {
-                try {
-                    bufferedOutputStream.close();
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(bufferedOutputStream!=null){
+                    try {
+                        bufferedOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if(fileOutputStream!=null){
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
 
         }
 

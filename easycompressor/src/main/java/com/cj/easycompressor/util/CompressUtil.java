@@ -44,7 +44,7 @@ public class CompressUtil {
         }
 
         //判断是否达到开始压缩的阈值
-        if (file.length() <= EasyCompressor.getInstance().getOptions().getMinSize()) {
+        if (file.length() <= EasyCompressor.getOptions().getMinSize()) {
             Log.e(EasyCompressor.TAG, "--未达到压缩阈值，不需要压缩--：" + filePath);
             return file;
         }
@@ -57,8 +57,8 @@ public class CompressUtil {
     private Bitmap scaledCompress(String path) {
 
         //屏幕宽高
-        int screenWidth = ScreenUtil.getScreenWidth(EasyCompressor.getInstance().getContext());
-        int screenHeight = ScreenUtil.getScreenHeight(EasyCompressor.getInstance().getContext());
+        int screenWidth = ScreenUtil.getScreenWidth(EasyCompressor.getContext());
+        int screenHeight = ScreenUtil.getScreenHeight(EasyCompressor.getContext());
 
         //图片原始宽高
         int w = 0;
@@ -172,7 +172,7 @@ public class CompressUtil {
         //质量压缩步进量
         final int step=3;
         //循环判断如果压缩后图片是否大于3M,大于继续压缩
-        while ( (options-step)>0 && baos.toByteArray().length > EasyCompressor.getInstance().getOptions().getTargetSize() && (EasyCompressor.getInstance().getOptions().isNeedQuality() ? ((options - step) > EasyCompressor.getInstance().getOptions().getMinQuality()) : true)) {
+        while ( (options-step)>0 && baos.toByteArray().length > EasyCompressor.getOptions().getTargetSize() && (EasyCompressor.getOptions().isNeedQuality() ? ((options - step) > EasyCompressor.getOptions().getMinQuality()) : true)) {
             // Clean up os
             baos.reset();
             // interval 10

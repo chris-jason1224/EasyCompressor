@@ -15,6 +15,11 @@ public class APP extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        EasyCompressor.init(this,new CompressOptions());
+        EasyCompressor.init(this);
+        Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getInstance(this));
     }
+
+
+
+
 }
