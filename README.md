@@ -14,7 +14,7 @@ Android图片压缩库
       2、直接使用
       
          //a.默认的压缩配置（压缩到1.5M以下，压缩后质量不低于65%）
-         EasyCompressor.getInstance().compress("file://xxxxx.png", new CompressCallback() {
+         EasyCompressor.getInstance(null).compress("file://xxxxx.png", new CompressCallback() {
             @Override
             public void onSuccess(File compressedFile) {
                 
@@ -27,7 +27,7 @@ Android图片压缩库
         });
            
           //批量压缩
-          EasyCompressor.getInstance().batchCompress(files, new BatchCompressCallback() {
+          EasyCompressor.getInstance(null).batchCompress(files, new BatchCompressCallback() {
             @Override
             public void onSuccess(List<File> files) {
                 
@@ -42,7 +42,7 @@ Android图片压缩库
 
         
          //b.自定义压缩配置
-         EasyCompressor.with(new CompressOptions(1024*1024*10,false,50)).
+         EasyCompressor.getInstance(new CompressOptions(1024*1024*10,false,50)).
                 compress("file://xxxxx.jpg", new CompressCallback() {
                     @Override
                     public void onSuccess(File compressedFile) {
