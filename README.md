@@ -9,7 +9,7 @@ Android图片压缩库
       
       #useage
       1、在Application中初始化
-         EasyCompressor.init(getApplicationContext(),new CompressOptions(1024*1024*3,true,75));
+         EasyCompressor.init(getApplicationContext());
          
       2、直接使用
       
