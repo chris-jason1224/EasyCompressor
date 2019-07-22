@@ -1,14 +1,16 @@
-package com.cj.easycompressor.util;
+package com.iflow.dfs.compressor.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.cj.easycompressor.config.ImageOption;
-import com.cj.easycompressor.core.EasyCompressor;
+import androidx.annotation.NonNull;
+
+
+import com.iflow.dfs.compressor.config.CompressOptions;
+import com.iflow.dfs.compressor.config.ImageOption;
+import com.iflow.dfs.compressor.core.EasyCompressor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,7 +69,7 @@ public class CompressUtil {
         //第一次采样，获取实际尺寸
         BitmapFactory.Options options = new BitmapFactory.Options();
         //解码模式默认是 argb_8888 32位 1像素占4字节
-        options.inPreferredConfig = Bitmap.Config.RGB_565;//rgb_565 5+6+5=1位，一个像素占用两个字节
+        options.inPreferredConfig = Bitmap.Config.RGB_565;//rgb_565 5+6+5=16位，一个像素占用两个字节
         //设置值读取图片边界
         options.inJustDecodeBounds = true;
         //第一次采样：读取原始图片宽高，不加载到内存
@@ -91,12 +93,12 @@ public class CompressUtil {
             //原图宽度大于屏幕宽度
             if (w > screenWidth) {
                 needScaled = true;
-                int pi = w / screenWidth;
-                //原图宽度在屏幕宽度的两倍以上，引入质量控制系数 pi*2/3
-                //todo 这里可以将压缩等级划分的更精细，针对原图和屏幕尺寸不同比例，采用不同等级的缩放方式
-                int newPI = calculatePI(pi);
-                compressedW = screenWidth * newPI;
-                //compressedW = screenWidth * pi * 2 / 3;
+                double pi = w / screenWidth;
+                double newPI = calculatePI(pi);
+                if(newPI<=0){
+                    newPI = 1;
+                }
+                compressedW = (int) (screenWidth * newPI);
                 compressedH = h * compressedW / w;
             }
         }
@@ -105,11 +107,13 @@ public class CompressUtil {
         if (w < h) {
             if (h > screenHeight) {
                 needScaled = true;
-                int pi = h / screenHeight;
+                double pi = h / screenHeight;
                 //原图长度在屏幕长度的两倍以上
-                int newPI = calculatePI(pi);
-                compressedH = screenHeight * newPI;
-                //compressedH = screenHeight * pi * 2 / 3;
+                double newPI = calculatePI(pi);
+                if(newPI<=0){
+                    newPI = 1;
+                }
+                compressedH = (int) (screenHeight * newPI);
                 compressedW = compressedH * w / h;
             }
         }
@@ -118,11 +122,13 @@ public class CompressUtil {
         if (w == h) {
             if (w > screenWidth) {
                 needScaled = true;
-                int pi = w / screenWidth;
+                double pi = w / screenWidth;
                 //原图宽为屏幕宽度的2倍以上
-                int newPI = calculatePI(pi);
-                compressedH = compressedW = screenWidth * newPI;
-                //compressedH = compressedW = screenWidth * pi * 2 / 3;
+                double newPI = calculatePI(pi);
+                if(newPI<=0){
+                    newPI = 1;
+                }
+                compressedH = compressedW = (int) (screenWidth * newPI);
             }
         }
 
@@ -188,34 +194,33 @@ public class CompressUtil {
         return FileUtil.getInstance().write2Local(baos.toByteArray(), suffix);
     }
 
-    private int calculatePI(int pi) {
+    private double calculatePI(double pi) {
 
         if (pi > 1 && pi <= 2) {
-            pi = 8 / 10;
+            pi = 0.8;
         } else if (pi > 2 && pi <= 3) {
-            pi = 9 / 10;
+            pi = 0.9;
         } else if (pi > 3 && pi <= 4) {
             pi = 1;
         } else if (pi > 4 && pi <= 5) {
-            pi = 11 / 10;
+            pi = 1.1;
         } else if (pi > 5 && pi <= 6) {
-            pi = 12 / 10;
+            pi = 1.2;
         } else if (pi > 6 && pi <= 7) {
-            pi = 13 / 10;
+            pi = 1.3;
         } else if (pi > 7 && pi <= 8) {
-            pi = 14 / 10;
+            pi = 1.4;
         } else if (pi > 8 && pi <= 9) {
-            pi = 15 / 10;
+            pi = 1.5;
         } else if (pi > 9 && pi <= 10) {
-            pi = 16 / 10;
+            pi = 1.6;
         } else if (pi > 10 && pi <= 11) {
-            pi = 17 / 10;
+            pi = 1.7;
         } else if (pi > 11 && pi <= 12) {
-            pi = 18 / 10;
+            pi = 1.8;
         } else if (pi > 12) {
-            pi = 19 / 10;
+            pi = 1.9;
         }
-
 
         return pi;
     }
