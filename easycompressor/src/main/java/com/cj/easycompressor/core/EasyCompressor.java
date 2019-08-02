@@ -101,6 +101,10 @@ public class EasyCompressor implements IEasyCompressor {
     @Override
     public void compress(@NonNull final String filePath, @NonNull final CompressCallback callback) {
 
+        if(callback!=null){
+            callback.onStart();
+        }
+
         getCompressedFile(filePath).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<File>() {
             @Override
             public void accept(File file) throws Exception {
@@ -115,12 +119,24 @@ public class EasyCompressor implements IEasyCompressor {
                     callback.onFailed(throwable);
                 }
             }
+        }, new Action() {
+            @Override
+            public void run() throws Exception {
+                if(callback!=null){
+                    callback.onFisish();
+                }
+            }
         });
 
     }
 
     @Override
     public void batchCompress(@NonNull final List<String> filePaths, @NonNull final BatchCompressCallback callback) {
+
+        if(callback!=null){
+            callback.onStart();
+        }
+
         final List<File> files = new ArrayList<>();
 
         Observable.fromIterable(filePaths).concatMap(new Function<String, ObservableSource<File>>() {
@@ -145,6 +161,7 @@ public class EasyCompressor implements IEasyCompressor {
             public void run() throws Exception {
                 if(callback!=null){
                     callback.onSuccess(files);
+                    callback.onFisish();
                 }
             }
         });

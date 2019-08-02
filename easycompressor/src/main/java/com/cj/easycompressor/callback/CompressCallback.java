@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * 压缩结果回调接口
  */
-public interface CompressCallback {
+public interface CompressCallback extends IBaseCallback{
 
     void onSuccess(File compressedFile);
 

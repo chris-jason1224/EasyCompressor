@@ -1,16 +1,13 @@
-package com.iflow.dfs.compressor.util;
+package com.cj.easycompressor.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-
-import com.iflow.dfs.compressor.config.CompressOptions;
-import com.iflow.dfs.compressor.config.ImageOption;
-import com.iflow.dfs.compressor.core.EasyCompressor;
+import com.cj.easycompressor.config.ImageOption;
+import com.cj.easycompressor.core.EasyCompressor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

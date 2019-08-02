@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 //批量压缩结果接口
-public interface BatchCompressCallback {
+public interface BatchCompressCallback extends IBaseCallback{
 
     void onSuccess(List<File> files);
 

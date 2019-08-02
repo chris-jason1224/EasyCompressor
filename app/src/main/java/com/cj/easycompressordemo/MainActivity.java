@@ -66,6 +66,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                     EasyCompressor.getInstance(null).compress(paths.get(0), new CompressCallback() {
                                         @Override
+                                        public void onStart() {
+
+                                        }
+
+                                        @Override
+                                        public void onFisish() {
+
+                                        }
+
+                                        @Override
                                         public void onSuccess(File compressedFile) {
                                             Log.e("gg", "压缩成功：" + compressedFile.getAbsolutePath());
                                         }
@@ -109,6 +119,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         paths.add(file.getPath());
                                     }
                                     EasyCompressor.getInstance(null).batchCompress(paths, new BatchCompressCallback() {
+
+                                        @Override
+                                        public void onStart() {
+
+                                        }
+
+                                        @Override
+                                        public void onFisish() {
+
+                                        }
 
                                         @Override
                                         public void onSuccess(List<File> files) {
