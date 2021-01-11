@@ -97,9 +97,9 @@ public class CompressUtil {
     /*************二次采样压缩图片分辨率*************/
     private Bitmap scaledCompress(String path) {
 
-        //屏幕宽高
-        int screenWidth = ScreenUtil.getScreenWidth(EasyCompressor.getContext());
-        int screenHeight = ScreenUtil.getScreenHeight(EasyCompressor.getContext());
+        //屏幕宽高，指定压缩至屏幕一半
+        int screenWidth = ScreenUtil.getScreenWidth(EasyCompressor.getContext())/2;
+        int screenHeight = ScreenUtil.getScreenHeight(EasyCompressor.getContext())/2;
 
         //图片原始宽高
         int w = 0;
