@@ -195,5 +195,20 @@ public class EasyCompressor implements IEasyCompressor {
         }).subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public byte[] genThumbnail(String imagePath) {
+        String lowerPath = imagePath.toLowerCase();
+        //图片后缀名
+        String suffix = ImageOption.IMG_PNG_SUFFIX;
+
+        if (lowerPath.endsWith(ImageOption.IMG_JPG_SUFFIX)) {
+            suffix = ImageOption.IMG_JPG_SUFFIX;
+        } else if (lowerPath.endsWith(ImageOption.IMG_JPEG_SUFFIX)) {
+            suffix = ImageOption.IMG_JPEG_SUFFIX;
+        }
+
+        return CompressUtil.create().invokeCompressRTByte(imagePath, suffix);
+    }
+
 
 }

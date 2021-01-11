@@ -1,5 +1,7 @@
 package com.cj.easycompressor.core;
 
+import android.support.annotation.WorkerThread;
+
 import com.cj.easycompressor.callback.BatchCompressCallback;
 import com.cj.easycompressor.callback.CompressCallback;
 
@@ -19,5 +21,9 @@ public interface IEasyCompressor {
 
     /******批量压缩*****/
     void batchCompress(List<String> filePaths, BatchCompressCallback callback);
+
+    /**同步生成缩略图**/
+    @WorkerThread
+    byte[] genThumbnail(String imagePath);
 
 }
